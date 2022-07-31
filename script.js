@@ -1,54 +1,74 @@
 let sec = document.querySelector(".sec");
 let ten = document.querySelector(".tens")
-let audio = document.getElementById("audio");
-let music = document.querySelector(".music");
-let tsec = 0;
-let tmin = 0;
+let min = document.querySelector(".min")
 let watchimg = document.querySelector(".watch img");
 let strt = document.querySelector(".button-start");
+let stop = document.querySelector(".button-stop");
 let reset = document.querySelector(".button-reset");
+let tmilisec = 0;
+let tsec = 0;
+let minute = 0;
 let strtid;
+// to start timer
 strt.addEventListener("click", () => {
-        watchimg.classList.add("ani")
-        strt.innerHTML == "stop";
+    if (strtid == undefined) {
+
+        watchimg.classList.add("animate")
+        watchimg.classList.add("play")
         strtid = setInterval(() => {
-            tsec++;
+            tmilisec++;
+            if (tmilisec < 9) {
+                ten.innerHTML = '0' + tmilisec;
+            }
+            if (tmilisec > 9) {
+                ten.innerHTML = tmilisec;
+            }
+            if (tmilisec > 99) {
+                tsec++;
+                tmilisec = 0;
+            }
             if (tsec < 9) {
-                ten.innerHTML = '0' + tsec;
+                sec.innerHTML = '0' + tsec;
             }
             if (tsec > 9) {
-                ten.innerHTML = tsec;
+                sec.innerHTML = tsec;
             }
-            if (tsec > 99) {
-                tmin++;
-                sec.innerHTML = tmin;
+            if (tsec >= 60) {
+                minute++;
                 tsec = 0;
+                tmilisec = 0;
+            }
+            if (minute < 9) {
+                min.innerHTML = '0' + minute;
+            }
+            if (minute > 9) {
+                min.innerHTML = minute;
             }
         }, 10);
-    
-    console.log(strt.value)
-    if (strt.value == "stop") {
-        clearInterval(strtid);
-        audio.pause();
-        strt.innerHTML = "start";
-        music.innerHTML = "kch gana shana"
-        watchimg.classList.remove("ani")
+
+
+
     }
+})
+// to stop timer
+stop.addEventListener('click', () => {
+
+    clearInterval(strtid);
+    watchimg.classList.remove("play")
+    watchimg.classList.add("pause")
+    strtid = undefined
 
 })
-music.addEventListener('click', () => {
-    if (music.innerHTML == "kch gana shana") {
-        audio.play();
-        music.innerHTML = "shanti"
-    } else {
-        audio.pause();
-        audio.currentTime = 0;
-        music.innerHTML = "kch gana shana";
-    }
-})
+// to reset timer
 reset.addEventListener("click", () => {
     clearInterval(strtid)
     sec.innerHTML = "00";
     ten.innerHTML = "00";
-    music.innerHTML = "kch gana shana";
+    min.innerHTML = "00";
+    tmilisec = 0;
+    tsec = 0;
+    minute = 0;
+    watchimg.classList.remove("animate")
+    watchimg.classList.remove("play")
+    strtid = undefined
 })
